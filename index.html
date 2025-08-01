@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Label Penanggung Jawab Rak</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+    @font-face {
+      font-family: 'Angels';
+      src: url('https://dl.dafont.com/dl/?f=angels') format('truetype');
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #ffffff);
+      padding: 20px;
+      margin: 0;
+    }
+    h2 {
+      color: #00796b;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header-banner {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header-banner img {
+      max-height: 80px;
+    }
+    .form-wrapper {
+      background: #ffffff;
+      padding: 25px;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .form-block {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      background: #f0fdfb;
+      transition: all 0.3s ease;
+    }
+    .form-block:hover {
+      box-shadow: 0 0 10px rgba(0, 150, 136, 0.2);
+    }
+    .form-input {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-input label {
+      width: 90px;
+      font-size: 14px;
+      color: #00796b;
+      font-weight: 500;
+    }
+    .form-input input,
+    .form-input select {
+      flex: 1;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #009688;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 10px 10px 20px 0;
+      font-size: 15px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #00796b;
+    }
+    .label-container {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 15px;
+    }
+    .label {
+      background: #ffffff;
+      border: 1px solid #000;
+      border-radius: 8px;
+      padding: 12px;
+      width: 210px;
+      height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-inside: avoid;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .label-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .label-header img {
+      height: 25px;
+    }
+    .label-header h3 {
+      margin: 0;
+      font-size: 13px;
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      color: #000000;
+    }
+    .label-content {
+      font-size: 12px;
+      line-height: 1.4;
+      padding-left: 3px;
+      color: #333;
+    }
+    .credit {
+      margin-top: 40px;
+      font-family: 'Angels', cursive;
+      font-size: 20px;
+      text-align: center;
+      color: #00796b;
+    }
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+        background: white;
+      }
+      .form-wrapper, .credit, .action-buttons, h2, .header-banner {
+        display: none;
+      }
+      .label-container {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        padding: 10px;
+        margin: 0;
+      }
+      .label {
+        border: 1px solid #000;
+        width: auto;
+        height: auto;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Indomaret.svg/1920px-Indomaret.svg.png" alt="Logo Indomaret">
+</div>
+
+<div class="form-wrapper">
+  <h2>Form Input Label Penanggung Jawab</h2>
+  <div class="form-grid" id="form-container"></div>
+  <div class="action-buttons">
+    <button onclick="addForm()">Tambah Label</button>
+    <button onclick="generateLabels()">Tampilkan Label</button>
+    <button onclick="window.print()">Cetak Label</button>
+  </div>
+</div>
+
+<h2>Label Penanggung Jawab Rak</h2>
+<div class="label-container" id="labels"></div>
+<div class="credit">Create by: JONS HERBAL</div>
+
+<script>
+let formCount = 0;
+const modisGroupOptions = ['SNB', 'DND', 'TOYS', 'MBF', 'CLB', 'BEV', 'SNK', 'MANUAL'];
+
+function createForm(index) {
+  return `
+    <div class="form-block" id="form${index}">
+      <div class="form-input"><label>Nama:</label><input type="text" id="nama${index}"></div>
+      <div class="form-input"><label>NIK:</label><input type="text" id="nik${index}"></div>
+      <div class="form-input">
+        <label>Jabatan:</label>
+        <select id="jabatan${index}">
+          <option value="CIF">CIF</option>
+          <option value="SSL">SSL</option>
+          <option value="SJL">SJL</option>
+          <option value="SCG">SCG</option>
+          <option value="SCB">SCB</option>
+        </select>
+      </div>
+      <div class="form-input">
+        <label>Modis:</label>
+        <select id="modisGroup${index}" onchange="toggleModisInput(${index})">
+          ${modisGroupOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+        </select>
+        <select id="modisNumber${index}">
+          ${[...Array(10)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('')}
+        </select>
+        <input type="text" id="modisManual${index}" placeholder="Isi Manual" style="display:none;">
+      </div>
+      <div class="form-input"><label>Hari:</label><input type="text" id="hari${index}"></div>
+    </div>
+  `;
+}
+
+function addForm() {
+  const container = document.getElementById('form-container');
+  container.insertAdjacentHTML('beforeend', createForm(formCount));
+  formCount++;
+}
+
+function toggleModisInput(i) {
+  const group = document.getElementById(`modisGroup${i}`).value;
+  const numberSelect = document.getElementById(`modisNumber${i}`);
+  const manualInput = document.getElementById(`modisManual${i}`);
+  if (group === "MANUAL") {
+    numberSelect.style.display = "none";
+    manualInput.style.display = "inline-block";
+  } else {
+    numberSelect.style.display = "inline-block";
+    manualInput.style.display = "none";
+  }
+}
+
+function generateLabels() {
+  const labelContainer = document.getElementById('labels');
+  labelContainer.innerHTML = '';
+  labelContainer.style.display = 'grid';
+
+  for (let i = 0; i < formCount; i++) {
+    const nama = document.getElementById(`nama${i}`).value;
+    const nik = document.getElementById(`nik${i}`).value;
+    const jabatan = document.getElementById(`jabatan${i}`).value;
+    const group = document.getElementById(`modisGroup${i}`).value;
+    const number = document.getElementById(`modisNumber${i}`).value;
+    const manual = document.getElementById(`modisManual${i}`).value;
+    const hari = document.getElementById(`hari${i}`).value;
+
+    let modisDisplay = group === "MANUAL" ? manual : `${group} ${number}`;
+
+    labelContainer.innerHTML += `
+      <div class="label">
+        <div class="label-header">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Indomaret.svg/1920px-Indomaret.svg.png" alt="Logo">
+          <h3>Penanggung Jawab Rak</h3>
+        </div>
+        <div class="label-content">
+          <strong>Nama:</strong> ${nama}<br>
+          <strong>NIK:</strong> ${nik}<br>
+          <strong>Jabatan:</strong> ${jabatan}<br>
+          <strong>Modis:</strong> ${modisDisplay}<br>
+          <strong>Hari:</strong> ${hari}
+        </div>
+      </div>
+    `;
+  }
+}
+
+window.onload = function() {
+  addForm();
+};
+</script>
+
+</body>
+</html>
